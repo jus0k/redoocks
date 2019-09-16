@@ -1,5 +1,11 @@
 import React, { useState, useReducer } from "react";
-import reducer, { initialState, ADD, DELETE, COMPLETE } from "./reducer";
+import reducer, {
+  initialState,
+  ADD,
+  DELETE,
+  COMPLETE,
+  UNCOMPLETE
+} from "./reducer";
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -58,6 +64,13 @@ const App = () => {
                   onClick={() => dispatch({ type: DELETE, payload: toDo.id })}
                 >
                   <span>❌</span>
+                </button>
+                <button
+                  onClick={() =>
+                    dispatch({ type: UNCOMPLETE, payload: toDo.id })
+                  }
+                >
+                  <span>🙅‍♂️</span>
                 </button>
               </li>
             ))}
