@@ -1,13 +1,70 @@
-import React from "react";
-import Screen from "./Screen";
-import Lang from "./context";
-import translations from "./translations";
+import React, { useState, useReducer } from "react";
+import reducer, { initialState, ADD, DELETE, COMPLETE } from "./reducer";
 
 const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const [newToDo, setNewToDo] = useState("");
+
+  const onSubmit = e => {
+    e.preventDefault();
+    dispatch({ type: ADD, payload: newToDo });
+    setNewToDo("");
+  };
+
+  const onChange = e => {
+    const {
+      target: { value }
+    } = e;
+    setNewToDo(value);
+  };
+
   return (
-    <Lang defaultLang="en" translations={translations}>
-      <Screen />
-    </Lang>
+    <>
+      <h2>Add To Do</h2>
+      <form onSubmit={onSubmit}>
+        <input
+          type="text"
+          placeholder="Write to do"
+          value={newToDo}
+          onChange={onChange}
+        />
+      </form>
+      <h2>To Dos</h2>
+      <ul>
+        {state.toDos.map(toDo => (
+          <li key={toDo.id}>
+            <span>{toDo.text}</span>
+            <button
+              onClick={() => dispatch({ type: DELETE, payload: toDo.id })}
+            >
+              <span>❌</span>
+            </button>
+            <button
+              onClick={() => dispatch({ type: COMPLETE, payload: toDo.id })}
+            >
+              <span>✅</span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      {state.completed.length !== 0 && (
+        <>
+          <h2>Completed</h2>
+          <ul>
+            {state.completed.map(toDo => (
+              <li key={toDo.id}>
+                <span>{toDo.text}</span>
+                <button
+                  onClick={() => dispatch({ type: DELETE, payload: toDo.id })}
+                >
+                  <span>❌</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+    </>
   );
 };
 
