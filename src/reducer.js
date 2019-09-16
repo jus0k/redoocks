@@ -1,9 +1,5 @@
 import uuid from "uuid/v4";
-
-export const ADD = "add";
-export const DELETE = "del";
-export const COMPLETE = "complete";
-export const UNCOMPLETE = "uncomplete";
+import { ADD, DELETE, COMPLETE, UNCOMPLETE } from "./actions";
 
 export const initialState = {
   toDos: [],
